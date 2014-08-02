@@ -6,44 +6,61 @@
 	<link rel="shortcut icon" href="images/favicon.png" />
 	<link rel="apple-touch-icon-precomposed" href="images/favicon-touch.png" />
 	<link rel="alternate" type="application/rss+xml" title="Libre Projects" href="https://github.com/libreprojects/libreprojects/commits/gh-pages/js/data.json.atom" />
-	<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-	<!--<script type="text/javascript" src="js/jquery.cookie.js"></script>-->
-	<!--script type="text/javascript" src="js/jquery.ba-dotimeout.min.js"></script-->
-	<script type="text/javascript" src="js/jquery.ba-bbq.min.js"></script>
-	<script type="text/javascript" src="js/jquery.Storage.js"></script>
-	<script type="text/javascript" src="js/jquery.simplemodal.1.4.2.min.js"></script>
-	<script type="text/javascript" src="js/jquery.smooth-scroll-1.4.1.min.js"></script>
-	<script type="text/javascript" src="js/data.json"></script>
-	<script type="text/javascript" src="js/default.js"></script>
-	<script type="text/javascript" src="js/jquery.infieldlabel.min.js"></script>
-	<script type="text/javascript" src="js/prefixfree.min.js"></script>
+	<script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
 </head>
-<body>
-<h1><a href="http://libreprojects.net"><img src="images/favicon-touch.png" alt="" /><span>Libre Projects</span></a></h1>
-<p><span id="nb-projects"></span> <span class="translatable">open source hosted web services</span></p>
-
-<ul id="locale"></ul>
-<p id="search"><label class="translatable" for="searching">search</label><input id="searching" name="searching" type="search" autofocus /></p>
-<p id="searchError"><span id="searchMessage" class="translatable">No results for</span> <strong><span id="searchItem"></span></strong>.</p>
-
-<div id="categories">
-	<h2 id="favorites"><a href="#favorites">&#9733;</a></h2>
-	<ul></ul>
-</div>
-
-<footer>
-	<h3 id="information" class="translatable">Information</h3>
-	<p class="translatable">Web services listed here have free usage &amp; sharing as a main goal – using free licenses such as <a href='http://en.wikipedia.org/wiki/MIT_License'>MIT</a>, <a href='http://www.gnu.org/licenses/agpl.html'><abbr title='GNU Affero General Public License'>GNU AGPL</abbr></a>, <a title='preferably Attribution or Share-Alike' href='http://creativecommons.org/'>Creative Commons</a> or similar terms. There will be no advertising for corporations that offer libre features as a niche service. On the other hand, platforms that mainly distribute free content and don't require user accounts do not have to be free themselves.</p>
-	<p class="translatable">In the end, hosted web services are all about mutual trust. Users trust that their data is secure and the service will stay available in the future. Developers trust that the service will not be abused.</p>
-	<p class="translatable">Ideally, you have a <a href='http://freedomboxfoundation.org'>FreedomBox</a> running at home and don't need to trust anyone. But many are not in the position to do that; either because of no permanent residence, not enough money to afford it or a weak internet connection not able to serve data across the country. That's why we hope the <a href='http://unhosted.org'>Unhosted</a> architecture will get adopted.</p>
-
-	<h3 id="participate" class="translatable">Participate</h3>
-	<p class="translatable" xmlns:dct='http://purl.org/dc/terms/'>
-		<a rel='dct:publisher' href='http://jancborchardt.net'><span property='dct:title'>Jan-Christoph Borchardt</span></a> &amp;
-		<a rel='dct:publisher' href='http://github.com/jhuet'><span property='dct:title'>Jérémy Huet</span></a> have <a rel='license' href='http://creativecommons.org/publicdomain/zero/1.0/' title='by a Public Domain Dedication'>waived all copyright</a> on this project (logos are subject to their own license).
+<body ng-app='lp'>
+<div ng-controller='HomeCtrl'>
+	<h1>
+		<a href="http://libreprojects.net">
+			<img src="images/favicon-touch.png" alt="" />
+			<span>Libre Projects</span>
+		</a>
+	</h1>
+	<p>
+		<span id="nb-projects">{{data.nop}}</span> 
+		<span class="translatable">open source hosted web services</span>
 	</p>
-	<p class="translatable"><a href='http://github.com/libreprojects/libreprojects'>Help with code</a>, <a href='http://github.com/libreprojects/libreprojects/issues/new'>suggest a project</a> (make sure it’s open source, hosted & usable) and tell your friends about this!</p>
-</footer>
+
+	<ul id="locale"></ul>
+	<p id="search">
+		<input id="searching" ng-model="search.name" name="searching" type="search" placeholder="search" autofocus />
+	</p>
+	<p id="searchError"><span id="searchMessage" class="translatable">No results for</span> <strong><span id="searchItem"></span></strong>.</p>
+
+	<div id="categories">
+		<!-- <h2 id="favorites"><a href="#favorites">&#9733;</a></h2> -->
+		<div id="category" ng-repeat='category in data.categories'>
+			<h2 id="{{category.id}}"><a href="{{category.id}}" class="translatable">{{category.id}}</a></h2>
+			<ul>
+				<li ng-repeat='project in category.projects | filter:search:strict' id="{{project.id}}" style="display: list-item;">
+					<a href="{{project.source}}">
+						<img src="logos/{{project.id}}.png" alt="">
+						<span class="project">
+							<strong class="name">{{project.name}}</strong>
+							<span class="translatable">search engine</span>
+						</span>
+						<span class="star star-off"></span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<footer>
+		<h3 id="information" class="translatable">Information</h3>
+		<p class="translatable">Web services listed here have free usage &amp; sharing as a main goal – using free licenses such as <a href='http://en.wikipedia.org/wiki/MIT_License'>MIT</a>, <a href='http://www.gnu.org/licenses/agpl.html'><abbr title='GNU Affero General Public License'>GNU AGPL</abbr></a>, <a title='preferably Attribution or Share-Alike' href='http://creativecommons.org/'>Creative Commons</a> or similar terms. There will be no advertising for corporations that offer libre features as a niche service. On the other hand, platforms that mainly distribute free content and don't require user accounts do not have to be free themselves.</p>
+		<p class="translatable">In the end, hosted web services are all about mutual trust. Users trust that their data is secure and the service will stay available in the future. Developers trust that the service will not be abused.</p>
+		<p class="translatable">Ideally, you have a <a href='http://freedomboxfoundation.org'>FreedomBox</a> running at home and don't need to trust anyone. But many are not in the position to do that; either because of no permanent residence, not enough money to afford it or a weak internet connection not able to serve data across the country. That's why we hope the <a href='http://unhosted.org'>Unhosted</a> architecture will get adopted.</p>
+
+		<h3 id="participate" class="translatable">Participate</h3>
+		<p class="translatable" xmlns:dct='http://purl.org/dc/terms/'>
+			<a rel='dct:publisher' href='http://jancborchardt.net'><span property='dct:title'>Jan-Christoph Borchardt</span></a> &amp;
+			<a rel='dct:publisher' href='http://github.com/jhuet'><span property='dct:title'>Jérémy Huet</span></a> have <a rel='license' href='http://creativecommons.org/publicdomain/zero/1.0/' title='by a Public Domain Dedication'>waived all copyright</a> on this project (logos are subject to their own license).
+		</p>
+		<p class="translatable"><a href='http://github.com/libreprojects/libreprojects'>Help with code</a>, <a href='http://github.com/libreprojects/libreprojects/issues/new'>suggest a project</a> (make sure it’s open source, hosted & usable) and tell your friends about this!</p>
+	</footer>
+</div>
 
 <div id="project-details">
 	<div class="header">
@@ -75,5 +92,16 @@
 	</div>
 	<p class="tip translatable"></p>
 </div>
-
+<!--
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/jquery.ba-dotimeout.min.js"></script>
+	<script type="text/javascript" src="js/jquery.ba-bbq.min.js"></script>
+	<script type="text/javascript" src="js/jquery.Storage.js"></script>
+	<script type="text/javascript" src="js/jquery.simplemodal.1.4.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.smooth-scroll-1.4.1.min.js"></script>
+	<script type="text/javascript" src="js/data.json"></script>
+	<script type="text/javascript" src="js/default.js"></script>
+	<script type="text/javascript" src="js/jquery.infieldlabel.min.js"></script>
+	<script type="text/javascript" src="js/prefixfree.min.js"></script>
+-->
 </body></html>

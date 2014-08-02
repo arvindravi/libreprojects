@@ -1,4 +1,4 @@
-var lp = {
+{
 	"locales":[{"id":"en","name":"english"},{"id":"de","name":"german"},{"id":"fr","name":"french"},{"id":"it","name":"italian"},{"id":"ru","name":"russian"},{"id":"eo","name":"esperanto"}],
 	"categories":[{"id":"social","position":"1"},{"id":"tools","position":"2"},{"id":"news","position":"3"},{"id":"travel","position":"4"},{"id":"knowledge","position":"5"},{"id":"text","position":"6"},{"id":"audio","position":"7"},{"id":"video","position":"8"},{"id":"graphics","position":"9"},{"id":"publishing","position":"10"},{"id":"games","position":"11"},{"id":"emulators","position":"12"},{"id":"development","position":"13"},{"id":"science","position":"14"},{"id":"organization","position":"15"}],
 	"licenses":[
@@ -21,8 +21,8 @@ var lp = {
 		{"id":"gnu-lgpl-v3","name":"GNU Lesser General Public License v3","address":"https://www.gnu.org/licenses/lgpl-3.0.html"},
 		{"id":"mit","name":"MIT license","address":"http://www.opensource.org/licenses/MIT"},
 		{"id":"wtfpl-v2","name":"Do What the Fuck You Want to Public License v2","address":"http://www.wtfpl.net/"},
-		{"id":"zpl-v2","name":"The Zope Public License v2","address":"http://opensource.org/licenses/zpl-2.0"},
-	],
+		{"id":"zpl-v2","name":"The Zope Public License v2","address":"http://opensource.org/licenses/zpl-2.0"}
+],
 	"alternatives":[
 		{"id":"bing","name":"Bing","address":"https://www.bing.com/"},
 		{"id":"delicious","name":"Delicious","address":"https://www.delicious.com/"},
@@ -42,7 +42,7 @@ var lp = {
 		{"id":"twitter","name":"Twitter","address":"https://www.twitter.com/"},
 		{"id":"ubuntu one","name":"Ubuntu One","address":"https://one.ubuntu.com/"},
 		{"id":"yahoo","name":"Yahoo!","address":"https://yahoo.com/"},
-		{"id":"yahoo groups","name":"Yahoo! Groups","address":"https://groups.yahoo.com/"},
+		{"id":"yahoo groups","name":"Yahoo! Groups","address":"https://groups.yahoo.com/"}
 	],
 	"projects":[
 		{"id":"joindiaspora-com","category":"social","name":"Diaspora","description":"social network","address":"http://joindiaspora.com/","licenses":["gnu-agpl-v3"],"tags":["social","network","decentralized"],"alternative":["facebook","google plus"],"introduction":"Diaspora is a free personal web server that implements a distributed social networking service. Installations of the software form nodes (termed 'pods') which make up the distributed Diaspora social network.","source":"https://github.com/diaspora/"},
@@ -197,16 +197,6 @@ var lp = {
 		{"id":"mirocommunity","category":"video","name":"Miro Community","description":"platform","address":"http://mirocommunity.org/","licenses":["gnu-agpl-v3"],"source":"https://github.com/pculture/mirocommunity"},
 		{"id":"openhatch","category":"organization","name":"OpenHatch","description":"help platform","address":"http://openhatch.org/","licenses":["gnu-agpl-v3"],"source":"https://github.com/openhatch/oh-mainline"},
 		{"id":"friendica","category":"social","name":"Friendica","description":"social multi network","address":"http://friendica.com/","licenses":["mit"],"tags":["social","network","decentralized","microblog"],"alternative":["facebook","google plus","twitter"],"introduction":"Friendica is is an open source, free social web server. Your 'friends' can be from Facebook, Diaspora, Twitter, Identi.ca, weblogs and RSS feeds - and even email.","source":"https://github.com/friendica/"},
-		{"id":"orion","category":"development","name":"Orion","description":"IDE","address":"http://orionhub.org/","licenses":["epl-v1"],"tags":["ide","cloud"],"introduction": "Open Source Platform For Cloud Based Development"},
-	],
-	"defaultFavorites" : ["joindiaspora-com", "owncloud", "openstreetmap", "jamendo", "cloud9", "plos"]
-};
-
-$(document).ready(function() {
-	/**
-	 * Sort categories by their ascending positions.
-	 */
-	lp.categories.sort(function(a, b) {
-		return a.position - b.position;
-	} );
-} );
+		{"id":"orion","category":"development","name":"Orion","description":"IDE","address":"http://orionhub.org/","licenses":["epl-v1"],"tags":["ide","cloud"],"introduction": "Open Source Platform For Cloud Based Development"}
+	]
+}
