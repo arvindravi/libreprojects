@@ -2,48 +2,58 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<title>Libre Projects</title>
-	<link rel="stylesheet" type="text/css" href="css/default.css" />
+	<link rel="stylesheet" type="text/css" href="css/d.css" />
 	<link rel="shortcut icon" href="images/favicon.png" />
 	<link rel="apple-touch-icon-precomposed" href="images/favicon-touch.png" />
 	<link rel="alternate" type="application/rss+xml" title="Libre Projects" href="https://github.com/libreprojects/libreprojects/commits/gh-pages/js/data.json.atom" />
 	<script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.11.0.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 </head>
 <body ng-app='lp'>
 <div ng-controller='HomeCtrl'>
-	<h1>
+	<h1 class="header">
 		<a href="http://libreprojects.net">
-			<img src="images/favicon-touch.png" alt="" />
+			<img id="header-logo" src="images/favicon-touch.png" alt="" />
 			<span>Libre Projects</span>
 		</a>
 	</h1>
-	<p>
+	<p class="sub-title">
 		<span id="nb-projects">{{data.nop}}</span> 
 		<span class="translatable">open source hosted web services</span>
 	</p>
 
 	<ul id="locale"></ul>
 	<p id="search">
-		<input id="searching" ng-model="search.name" name="searching" type="search" placeholder="search" autofocus />
+		<input id="searching" ng-model="search.id" name="searching" type="search" placeholder="search" autofocus />
 	</p>
 	<p id="searchError"><span id="searchMessage" class="translatable">No results for</span> <strong><span id="searchItem"></span></strong>.</p>
 
-	<div id="categories">
-		<!-- <h2 id="favorites"><a href="#favorites">&#9733;</a></h2> -->
-		<div id="category" ng-repeat='category in data.categories'>
-			<h2 id="{{category.id}}"><a href="{{category.id}}" class="translatable">{{category.id}}</a></h2>
-			<ul>
-				<li ng-repeat='project in category.projects | filter:search:strict' id="{{project.id}}" style="display: list-item;">
-					<a href="{{project.source}}">
-						<img src="logos/{{project.id}}.png" alt="">
-						<span class="project">
-							<strong class="name">{{project.name}}</strong>
-							<span class="translatable">search engine</span>
-						</span>
-						<span class="star star-off"></span>
-					</a>
-				</li>
-			</ul>
+	<div id="categories" ng-init='filtered=[]'>
+		<div id="category" ng-show='filtered[key].length > 0' ng-repeat='(key,category) in data.categories '>
+			<div id="category_header">
+				<h2 id="{{category.id}}">
+					<a href="{{category.id}}" class="translatable">{{category.id}}</a>
+				</h2>
+				<!-- <h2 ng-if='category.id=favorites' id="fav">
+					<a href="#fav">&#9733;</a>
+				</h2> -->
+			</div>
+			<div id="category_content">
+				<ul>
+					<li ng-repeat='project in filtered[key] = (category.projects | filter: search.id:strict)' id="{{project.id}}">
+						<a href ng-click='open(project)'>
+							<img src="logos/{{project.id}}.png" alt="">
+							<span class="project">
+								<strong class="name" ng-model="p">{{project.name}}</strong>
+								<span class="translatable">search engine</span>
+							</span>
+							<span class="star star-off"></span>
+						</a>
+					</li>
+					<!-- <li ng-if='category.id=favorites' ng-repeat='favorite in favorites' id="{{favorite.id}}">{{favorite.name}}</li> -->
+				</ul>
+			</div>
 		</div>
 	</div>
 
@@ -61,6 +71,41 @@
 		<p class="translatable"><a href='http://github.com/libreprojects/libreprojects'>Help with code</a>, <a href='http://github.com/libreprojects/libreprojects/issues/new'>suggest a project</a> (make sure it’s open source, hosted & usable) and tell your friends about this!</p>
 	</footer>
 </div>
+
+<script type="text/ng-template" id="projectModal.html">
+    <div id="project-details">
+		<div class="header">
+			<p>
+				<a href="">
+					<img src="logos/{{project.id}}.png" alt="" class="logo" />
+					<strong class="name">{{project.name}}</strong>
+				</a>
+			</p>
+			<p class="cat-desc">
+				<a href="#" class="category translatable">{{project.category}}</a>
+				<span class="description translatable">{{project.description}}</span>
+			</p>
+		</div>
+		<!-- <p>
+			<a class="address" target="_blank" href="{{project.address}}">
+				<img class="logo" src="logos/{{project.id}}.png" alt="">
+				<strong class="name">{{project.name}}</strong>
+			</a>
+		</p>
+		<p class="cat-desc">
+			<a href="#social" class="category translatable">{{project.category}}</a>
+			<span class="description translatable">{{project.description}}</span>
+		</p>
+		<ul class="tags">
+			<li ng-repeat='tag in tags'>
+				{{tag}}
+			</li>
+		</ul> -->
+    </div>
+    <div class="modal-body">
+        
+    </div>
+</script>
 
 <div id="project-details">
 	<div class="header">

@@ -198,5 +198,6 @@
 		{"id":"openhatch","category":"organization","name":"OpenHatch","description":"help platform","address":"http://openhatch.org/","licenses":["gnu-agpl-v3"],"source":"https://github.com/openhatch/oh-mainline"},
 		{"id":"friendica","category":"social","name":"Friendica","description":"social multi network","address":"http://friendica.com/","licenses":["mit"],"tags":["social","network","decentralized","microblog"],"alternative":["facebook","google plus","twitter"],"introduction":"Friendica is is an open source, free social web server. Your 'friends' can be from Facebook, Diaspora, Twitter, Identi.ca, weblogs and RSS feeds - and even email.","source":"https://github.com/friendica/"},
 		{"id":"orion","category":"development","name":"Orion","description":"IDE","address":"http://orionhub.org/","licenses":["epl-v1"],"tags":["ide","cloud"],"introduction": "Open Source Platform For Cloud Based Development"}
-	]
+	],
+	"defaultFavorites" : ["joindiaspora-com", "owncloud", "openstreetmap", "jamendo", "cloud9", "plos"]
 }
