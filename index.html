@@ -30,23 +30,41 @@
 	<p id="searchError"><span id="searchMessage" class="translatable">No results for</span> <strong><span id="searchItem"></span></strong>.</p>
 
 	<div id="categories" ng-init='filtered=[]'>
-		<div id="category" ng-show='filtered[key].length > 0' ng-repeat='(key,category) in data.categories '>
+		<div id="category">
 			<div id="category_header">
-				<h2 id="{{category.id}}">
-					<a href="{{category.id}}" class="translatable">{{category.id}}</a>
-				</h2>
-				<!-- <h2 ng-if='category.id=favorites' id="fav">
+				<h2 id="fav">
 					<a href="#fav">&#9733;</a>
-				</h2> -->
+				</h2>
 			</div>
 			<div id="category_content">
 				<ul>
-					<li ng-repeat='project in filtered[key] = (category.projects | filter: search.id:strict)' id="{{project.id}}">
+					<li ng-repeat='project in filtered[key] = (favorites | filter: search.id:strict)' id="{{project.id}}" ng-if='project.favorite==true'>
 						<a href ng-click='open(project)'>
 							<img src="logos/{{project.id}}.png" alt="">
 							<span class="project">
 								<strong class="name" ng-model="p">{{project.name}}</strong>
-								<span class="translatable">search engine</span>
+								<span class="translatable">{{project.description}}</span>
+							</span>
+							<span class="star star-off"></span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="category" ng-show='filtered[key].length > 0' ng-repeat='(key,category) in data.categories '>
+			<div id="category_header">
+				<h2 id="{{category.id}}">
+					<a href="#{{category.id}}" class="translatable">{{category.id}}</a>
+				</h2>
+			</div>
+			<div id="category_content">
+				<ul>
+					<li ng-repeat='project in filtered[key] = (category.projects | filter: search.id:strict)' id="{{project.id}}" ng-if='project.favorite==false'>
+						<a href ng-click='open(project)'>
+							<img src="logos/{{project.id}}.png" alt="">
+							<span class="project">
+								<strong class="name" ng-model="p">{{project.name}}</strong>
+								<span class="translatable">{{project.description}}</span>
 							</span>
 							<span class="star star-off"></span>
 						</a>
@@ -73,70 +91,59 @@
 </div>
 
 <script type="text/ng-template" id="projectModal.html">
-    <div id="project-details">
-		<div class="header">
-			<p>
-				<a href="">
-					<img src="logos/{{project.id}}.png" alt="" class="logo" />
-					<strong class="name">{{project.name}}</strong>
-				</a>
-			</p>
-			<p class="cat-desc">
-				<a href="#" class="category translatable">{{project.category}}</a>
-				<span class="description translatable">{{project.description}}</span>
-			</p>
-		</div>
-		<!-- <p>
-			<a class="address" target="_blank" href="{{project.address}}">
-				<img class="logo" src="logos/{{project.id}}.png" alt="">
-				<strong class="name">{{project.name}}</strong>
-			</a>
-		</p>
-		<p class="cat-desc">
-			<a href="#social" class="category translatable">{{project.category}}</a>
-			<span class="description translatable">{{project.description}}</span>
-		</p>
-		<ul class="tags">
-			<li ng-repeat='tag in tags'>
-				{{tag}}
-			</li>
-		</ul> -->
-    </div>
     <div class="modal-body">
-        
+	    <div id="project-details">
+			<div class="header">
+				<p>
+					<a href="{{project.address}}">
+						<img src="logos/{{project.id}}.png" alt="" class="logo" />
+						<strong class="name">{{project.name}}</strong>
+					</a>
+				</p>
+				<p class="cat-desc">
+					<a href="#" class="category translatable">{{project.category}}</a>
+					<span class="description translatable">{{project.description}}</span>
+				</p>
+				<ul class="tags">
+					<li ng-repeat='tag in project.tags'>#{{tag}}</li>
+				</ul>
+			</div>
+			<br />
+			<div class="details modal-body">
+				<p class="introduction translatable">{{project.introduction}}</p><br />
+				<div ng-if='project.alternatives.length > 0' class="alternative-to">
+					<p class="translatable label">Alternative to</p>
+					<ul>
+						<li ng-repeat='alternative in project.alternatives'>
+							<a href="{{alternative.address}}">
+								<img src="logos/alternatives/{{alternative.id}}.png" alt="{{alternative.name}}" />
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div ng-if='project.alternatives.length < 1'>
+					<p class="label">
+						No alternatives added yet
+					</p>
+				</div>
+				<br />
+				<div class="license">
+					<p class="label">
+						<a href="{{project.source}}">Source code</a>
+					</p>
+					<ul ng-if='project.fullLicenses'>
+						<li ng-repeat='license in project.fullLicenses'>
+							<a href="{{license.address}}">
+								<img src="logos/licenses/{{license.id}}.png" alt="" />
+							</a>
+						</li>
+					</ul>
+					<ul ng-if='project.fullLicenses.length < 1'><li>No License added yet.</li></ul>
+				</div>
+			</div>
+	    </div>
     </div>
 </script>
-
-<div id="project-details">
-	<div class="header">
-		<p><a class="address" target="_blank"><img class="logo" src="" alt="" /><strong class="name"></strong></a></p>
-		<p class="cat-desc"><a href="#" class="category translatable"></a><span class="description translatable"></span></p>
-		<ul class="tags"></ul>
-	</div>
-	<div class="details">
-		<p class="introduction translatable"></p>
-		<div class="similar-to">
-			<p class="translatable label" style="display:block">Similar to</p>
-			<p class="translatable label" style="display:none;width:100%;">No similar projects added yet</p>
-			<ul></ul>
-		</div>
-		<div class="alternative-to">
-			<p class="translatable label" style="display:block">Alternative to</p>
-			<p class="translatable label" style="display:none;width:100%;">No alternatives added yet</p>
-			<ul></ul>
-		</div>
-		<div class="license">
-			<p class="translatable label" style="display:block">Source code</p>
-			<p class="translatable label" style="display:none;width:100%;">No licenses added yet</p>
-			<ul></ul>
-		</div>
-		<div class="tosdr">
-			<p class="translatable label" style="display:block"><abbr title='Terms of service ratings provided by http://tos-dr.info'>TOS rating</abbr></p>
-			<ul></ul>
-		</div>
-	</div>
-	<p class="tip translatable"></p>
-</div>
 <!--
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
 	<script type="text/javascript" src="js/jquery.ba-dotimeout.min.js"></script>
