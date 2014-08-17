@@ -30,13 +30,13 @@
 	<p id="searchError"><span id="searchMessage" class="translatable">No results for</span> <strong><span id="searchItem"></span></strong>.</p>
 
 	<div id="categories" ng-init='filtered=[]'>
-		<div id="category" >
+		<div id="category" ng-controller='FavoritesCtrl'>
 			<div id="category_header">
 				<h2 id="fav">
 					<a href="#fav">&#9733;</a>
 				</h2>
 			</div>
-			<div id="category_content" ng-controller='FavoritesCtrl'>
+			<div id="category_content">
 				<ul>
 					<li ng-repeat='project in filtered[key] = (favorites | filter: search.id:strict)' id="{{project.id}}">
 						<a href ng-click='open(project)'>
@@ -51,7 +51,7 @@
 				</ul>
 			</div>
 		</div>
-		<div id="category" ng-show='filtered[key].length > 0' ng-repeat='(key,category) in data.categories '>
+		<div id="category" ng-controller='ProjectsCtrl' ng-show='filtered[key].length > 0' ng-repeat='(key,category) in data.categories'>
 			<div id="category_header">
 				<h2 id="{{category.id}}">
 					<a href="#{{category.id}}" class="translatable">{{category.id}}</a>
