@@ -181,7 +181,7 @@ h2+ul li { line-height:6em; }
 h2+ul li a { padding:35px 20px; white-space:nowrap; }
 
 /* favs */
-#category_content li a .star { position:absolute; margin:.3em 0 0 0; padding:0; z-index:200; font-size:1.3em; line-height:1em; }
+#category_content li a .star { position:absolute; margin: 0px 0px 0px 60px; padding:0; z-index:200; font-size:1.3em; line-height:1em; }
 #category_content li a .star-off:after { content:'\2606\a0'; }
 #category_content li a .star-off:hover:after { color:#D9C540; content:'\2605\a0'; }
 #category_content li a .star-on:after { color:#D9C540; content:'\2605\a0'; }

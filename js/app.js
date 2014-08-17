@@ -1,22 +1,38 @@
 angular.module('lp', ['ui.bootstrap'])
 
 .factory('LibreProjects', function($q, $http) {
-	var deferred = $q.defer();
 	var dataUrl = 'data/data.json';
+	function getData() {
+		return $http.get(dataUrl).then(function success(data) {
+			return data.data;
+		});
+	}
+	
+	function getFavorites() {
+		var favorites = [];
+		return $http.get(dataUrl).then(function success(data) {
+			data.data.projects.forEach(function(project) {
+				if(data.data.defaultFavorites.indexOf(project.id) != -1) {
+					project.favorite = true;
+					favorites.push(project);
+				}
+			});
+			console.log(favorites);
+			return favorites;
+		});
+	}
+	
 	return {
-		getData: function() {
-			deferred.resolve($http.get(dataUrl));
-			return deferred.promise;
-		}
+		getData: getData,
+		getFavorites: getFavorites
 	}
 })
 
-.controller('HomeCtrl', function($scope, $http, LibreProjects, $modal) {
+.controller('HomeCtrl', function($scope, $http, LibreProjects, $modal) {	
 	LibreProjects.getData().then(function(data){
-		$scope.data = data.data;
+		$scope.data = data;
 		$scope.data['nop'] = $scope.data.projects.length;
 		$scope.data.categories.forEach(function(category){ category.projects=[]; });
-		$scope.favorites = [];
 		
 		$scope.getAlternative = function(id) {
 			var alt;
@@ -42,16 +58,17 @@ angular.module('lp', ['ui.bootstrap'])
 			project.similarProjects = [];
 			project.alternatives = [];
 			project.fullLicenses = [];
-			project.favorite = false;
+			
+			if($scope.data.defaultFavorites.indexOf(project.id) != -1) {
+				project.favorite = true;
+			} 
+			else {
+				project.favorite = false;
+			};
+			
 			$scope.data.categories.forEach(function(category) {
 				if(category.id==project.category) {
 					category.projects.push(project);
-				}
-			});
-			$scope.data.defaultFavorites.forEach(function(projectId) {
-				if(projectId==project.id) {
-					project.favorite = true;
-					$scope.favorites.push(project)
 				}
 			});
 			if(project.alternative) {
@@ -65,8 +82,21 @@ angular.module('lp', ['ui.bootstrap'])
 				})
 			}
 		});
-		window.data = data.data;
-		window.favorites = $scope.favorites;
+		
+		$scope.toggleFavorite = function(project) {
+			if(project.favorite) {
+				project.favorite = false;
+				$scope.favorites.pop(project);
+				console.log(project);
+			}
+			else
+			{
+				project.favorite = true;
+				$scope.favorites.push(project);
+				console.log(project);
+			}
+		}
+		window.data = data;
 	});
 	
     $scope.open = function (project) {
@@ -95,4 +125,11 @@ angular.module('lp', ['ui.bootstrap'])
 	     $modalInstance.dismiss('cancel');
 	   };
 	 };
+})
+
+.controller('FavoritesCtrl', function($scope, LibreProjects) {
+	LibreProjects.getFavorites().then(function(favorites) {
+		$scope.favorites = favorites;
+		console.log($scope.favorites);
+	})
 })
